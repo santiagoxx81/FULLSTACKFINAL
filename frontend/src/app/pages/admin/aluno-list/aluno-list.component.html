@@ -1,0 +1,68 @@
+<div class="container">
+  <h2>Gerenciamento de Alunos</h2>
+
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+
+  <form (ngSubmit)="isEditing ? updateAluno() : createAluno()">
+    <h3>{{ isEditing ? 'Editar Aluno' : 'Novo Aluno' }}</h3>
+    <div class="form-group">
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" [(ngModel)]="newAluno.nome" name="nome" required>
+    </div>
+    <div class="form-group">
+      <label for="matricula">Matrícula:</label>
+      <input type="text" id="matricula" [(ngModel)]="newAluno.matricula" name="matricula" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" [(ngModel)]="newAluno.email" name="email">
+    </div>
+    <div class="form-group">
+      <label for="telefone">Telefone:</label>
+      <input type="text" id="telefone" [(ngModel)]="newAluno.telefone" name="telefone">
+    </div>
+    <div class="form-group">
+      <label for="usuario_id">Associar Usuário:</label>
+      <select id="usuario_id" [(ngModel)]="newAluno.usuario_id" name="usuario_id">
+        <option [ngValue]="null">Nenhum</option>
+        <option *ngFor="let user of users" [ngValue]="user.id">{{ user.usuario }} ({{ user.perfil }})</option>
+      </select>
+    </div>
+    <button type="submit">{{ isEditing ? 'Atualizar' : 'Criar' }} Aluno</button>
+    <button type="button" (click)="resetForm()">Cancelar</button>
+  </form>
+
+  <h3>Lista de Alunos</h3>
+  <table *ngIf="alunos.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Matrícula</th>
+        <th>Email</th>
+        <th>Telefone</th>
+        <th>Usuário Associado</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let aluno of alunos">
+        <td>{{ aluno.id }}</td>
+        <td>{{ aluno.nome }}</td>
+        <td>{{ aluno.matricula }}</td>
+        <td>{{ aluno.email }}</td>
+        <td>{{ aluno.telefone }}</td>
+        <td>{{ aluno.usuario_id ? ('ID: ' + aluno.usuario_id) : 'Nenhum' }}</td>
+        <td>
+          <button (click)="editAluno(aluno)">Editar</button>
+          <button (click)="deleteAluno(aluno.id)" class="delete-button">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="alunos.length === 0">Nenhum aluno cadastrado.</p>
+</div>
+
+

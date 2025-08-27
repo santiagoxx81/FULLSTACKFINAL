@@ -1,0 +1,15 @@
+<div class="dashboard-container">
+  <h2>Dashboard do Professor</h2>
+  <h3>Minhas Turmas</h3>
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+  <ul *ngIf="turmas.length > 0">
+    <li *ngFor="let turma of turmas">
+      <a [routerLink]="['/professor/turma', turma.id]">{{ turma.nome }} ({{ turma.periodo }})</a>
+    </li>
+  </ul>
+
+  <p *ngIf="turmas.length === 0">Nenhuma turma atribuída a você.</p>
+</div>
+
+

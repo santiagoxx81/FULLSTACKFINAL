@@ -1,0 +1,50 @@
+<div class="dashboard-container">
+  <h2>Dashboard do Aluno</h2>
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+  <h3>Minhas Notas</h3>
+  <table *ngIf="notas.length > 0">
+    <thead>
+      <tr>
+        <th>Disciplina</th>
+        <th>Nota</th>
+        <th>Turma</th>
+        <th>Data de Lançamento</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let nota of notas">
+        <td>{{ nota.disciplina_nome }}</td>
+        <td>{{ nota.nota }}</td>
+        <td>{{ nota.turma_nome }}</td>
+        <td>{{ nota.data_lancamento | date:
+          'shortDate' }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="notas.length === 0">Nenhuma nota encontrada.</p>
+
+  <h3>Minha Frequência</h3>
+  <table *ngIf="frequencia.length > 0">
+    <thead>
+      <tr>
+        <th>Disciplina</th>
+        <th>Data da Aula</th>
+        <th>Presente</th>
+        <th>Turma</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let freq of frequencia">
+        <td>{{ freq.disciplina_nome }}</td>
+        <td>{{ freq.data_aula | date:
+          'shortDate' }}</td>
+        <td>{{ freq.presente ? 'Sim' : 'Não' }}</td>
+        <td>{{ freq.turma_nome }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="frequencia.length === 0">Nenhum registro de frequência encontrado.</p>
+</div>
+
+

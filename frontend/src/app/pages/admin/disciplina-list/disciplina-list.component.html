@@ -1,0 +1,80 @@
+<div class="container">
+  <h2>Gerenciamento de Disciplinas</h2>
+
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+
+  <form (ngSubmit)="isEditing ? updateDisciplina() : createDisciplina()">
+    <h3>{{ isEditing ? 'Editar Disciplina' : 'Nova Disciplina' }}</h3>
+    <div class="form-group">
+      <label for="nome">Nome da Disciplina:</label>
+      <input type="text" id="nome" [(ngModel)]="newDisciplina.nome" name="nome" required>
+    </div>
+    <div class="form-group">
+      <label for="carga_horaria">Carga Horária:</label>
+      <input type="number" id="carga_horaria" [(ngModel)]="newDisciplina.carga_horaria" name="carga_horaria">
+    </div>
+    <button type="submit">{{ isEditing ? 'Atualizar' : 'Criar' }} Disciplina</button>
+    <button type="button" (click)="resetForm()">Cancelar</button>
+  </form>
+
+  <h3>Lista de Disciplinas</h3>
+  <table *ngIf="disciplinas.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Carga Horária</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let disciplina of disciplinas">
+        <td>{{ disciplina.id }}</td>
+        <td>{{ disciplina.nome }}</td>
+        <td>{{ disciplina.carga_horaria }}</td>
+        <td>
+          <button (click)="editDisciplina(disciplina)">Editar</button>
+          <button (click)="deleteDisciplina(disciplina.id)" class="delete-button">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="disciplinas.length === 0">Nenhuma disciplina cadastrada.</p>
+
+  <div *ngIf="isEditing && selectedDisciplinaId">
+    <h3>Associar Disciplina a Turma: {{ newDisciplina.nome }}</h3>
+    <div class="form-group">
+      <label for="turmaToAssociate">Selecionar Turma:</label>
+      <select id="turmaToAssociate" [(ngModel)]="selectedTurmaToAssociate" name="turmaToAssociate">
+        <option [ngValue]="null">Selecione uma turma</option>
+        <option *ngFor="let turma of turmas" [ngValue]="turma.id">{{ turma.nome }}</option>
+      </select>
+      <button (click)="addDisciplinaToTurma()">Associar</button>
+    </div>
+
+    <h4>Turmas Associadas</h4>
+    <table *ngIf="turmasAssociadas.length > 0">
+      <thead>
+        <tr>
+          <th>ID da Turma</th>
+          <th>Nome da Turma</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let turma of turmasAssociadas">
+          <td>{{ turma.id }}</td>
+          <td>{{ turma.nome }}</td>
+          <td>
+            <button (click)="removeDisciplinaFromTurma(turma.id)" class="delete-button">Remover</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="turmasAssociadas.length === 0">Nenhuma turma associada a esta disciplina.</p>
+  </div>
+</div>
+
+

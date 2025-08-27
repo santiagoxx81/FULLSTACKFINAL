@@ -1,0 +1,90 @@
+<div class="container">
+  <h2>Gerenciamento de Turmas</h2>
+
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+
+  <form (ngSubmit)="isEditing ? updateTurma() : createTurma()">
+    <h3>{{ isEditing ? 'Editar Turma' : 'Nova Turma' }}</h3>
+    <div class="form-group">
+      <label for="nome">Nome da Turma:</label>
+      <input type="text" id="nome" [(ngModel)]="newTurma.nome" name="nome" required>
+    </div>
+    <div class="form-group">
+      <label for="periodo">Período:</label>
+      <input type="text" id="periodo" [(ngModel)]="newTurma.periodo" name="periodo">
+    </div>
+    <div class="form-group">
+      <label for="professor_id">Professor Responsável:</label>
+      <select id="professor_id" [(ngModel)]="newTurma.professor_id" name="professor_id">
+        <option [ngValue]="null">Nenhum</option>
+        <option *ngFor="let professor of professores" [ngValue]="professor.id">{{ professor.nome }}</option>
+      </select>
+    </div>
+    <button type="submit">{{ isEditing ? 'Atualizar' : 'Criar' }} Turma</button>
+    <button type="button" (click)="resetForm()">Cancelar</button>
+  </form>
+
+  <h3>Lista de Turmas</h3>
+  <table *ngIf="turmas.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Período</th>
+        <th>Professor</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let turma of turmas">
+        <td>{{ turma.id }}</td>
+        <td>{{ turma.nome }}</td>
+        <td>{{ turma.periodo }}</td>
+        <td>{{ turma.professor_nome || 'Nenhum' }}</td>
+        <td>
+          <button (click)="editTurma(turma)">Editar</button>
+          <button (click)="deleteTurma(turma.id)" class="delete-button">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="turmas.length === 0">Nenhuma turma cadastrada.</p>
+
+  <div *ngIf="isEditing && selectedTurmaId">
+    <h3>Alunos na Turma: {{ newTurma.nome }}</h3>
+    <div class="form-group">
+      <label for="alunoToAdd">Adicionar Aluno:</label>
+      <select id="alunoToAdd" [(ngModel)]="selectedAlunoToAdd" name="alunoToAdd">
+        <option [ngValue]="null">Selecione um aluno</option>
+        <option *ngFor="let aluno of alunosDisponiveis" [ngValue]="aluno.id">{{ aluno.nome }} ({{ aluno.matricula }})</option>
+      </select>
+      <button (click)="addAlunoToTurma()">Adicionar</button>
+    </div>
+
+    <table *ngIf="alunosNaTurma.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Matrícula</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let aluno of alunosNaTurma">
+          <td>{{ aluno.id }}</td>
+          <td>{{ aluno.nome }}</td>
+          <td>{{ aluno.matricula }}</td>
+          <td>
+            <button (click)="removeAlunoFromTurma(aluno.id)" class="delete-button">Remover</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="alunosNaTurma.length === 0">Nenhum aluno nesta turma.</p>
+  </div>
+</div>
+
+

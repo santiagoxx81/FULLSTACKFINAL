@@ -1,0 +1,15 @@
+<header>
+  <nav>
+    <div class="logo">
+      <a routerLink="/">Sistema de Alunos</a>
+    </div>
+    <ul class="nav-links">
+      <li *ngIf="!authService.isLoggedIn()"><a routerLink="/login">Login</a></li>
+      <li *ngIf="!authService.isLoggedIn()"><a routerLink="/register">Registrar</a></li>
+      <li *ngIf="authService.isLoggedIn()"><a [routerLink]="getDashboardLink()">Dashboard</a></li>
+      <li *ngIf="authService.isLoggedIn()"><a (click)="logout()">Sair</a></li>
+    </ul>
+  </nav>
+</header>
+
+

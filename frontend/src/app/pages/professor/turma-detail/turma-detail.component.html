@@ -1,0 +1,157 @@
+<div class="container">
+  <h2 *ngIf="turma.nome">Detalhes da Turma: {{ turma.nome }}</h2>
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+
+  <div *ngIf="turmaId">
+    <h3>Alunos na Turma</h3>
+    <table *ngIf="alunosNaTurma.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Matrícula</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let aluno of alunosNaTurma">
+          <td>{{ aluno.id }}</td>
+          <td>{{ aluno.nome }}</td>
+          <td>{{ aluno.matricula }}</td>
+          <td>
+            <button (click)="loadNotasDoAluno(aluno.id)">Ver Notas</button>
+            <button (click)="loadFrequenciaDoAluno(aluno.id)">Ver Frequência</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="alunosNaTurma.length === 0">Nenhum aluno nesta turma.</p>
+
+    <h3>Disciplinas da Turma</h3>
+    <table *ngIf="disciplinasDaTurma.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Carga Horária</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let disciplina of disciplinasDaTurma">
+          <td>{{ disciplina.id }}</td>
+          <td>{{ disciplina.nome }}</td>
+          <td>{{ disciplina.carga_horaria }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="disciplinasDaTurma.length === 0">Nenhuma disciplina associada a esta turma.</p>
+
+    <hr>
+
+    <h3>Lançar Nota</h3>
+    <form (ngSubmit)="createNota()">
+      <div class="form-group">
+        <label for="alunoNota">Aluno:</label>
+        <select id="alunoNota" [(ngModel)]="newNota.aluno_id" name="alunoNota" required>
+          <option [ngValue]="null">Selecione um aluno</option>
+          <option *ngFor="let aluno of alunosNaTurma" [ngValue]="aluno.id">{{ aluno.nome }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="disciplinaNota">Disciplina:</label>
+        <select id="disciplinaNota" [(ngModel)]="newNota.disciplina_id" name="disciplinaNota" required>
+          <option [ngValue]="null">Selecione uma disciplina</option>
+          <option *ngFor="let disciplina of disciplinasDaTurma" [ngValue]="disciplina.id">{{ disciplina.nome }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="nota">Nota:</label>
+        <input type="number" id="nota" [(ngModel)]="newNota.nota" name="nota" step="0.01" required>
+      </div>
+      <button type="submit">Lançar Nota</button>
+      <button type="button" (click)="resetNotaForm()">Limpar</button>
+    </form>
+
+    <h4 *ngIf="newNota.aluno_id">Notas do Aluno Selecionado (ID: {{ newNota.aluno_id }})</h4>
+    <table *ngIf="notasDoAluno.length > 0">
+      <thead>
+        <tr>
+          <th>Disciplina</th>
+          <th>Nota</th>
+          <th>Data</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let nota of notasDoAluno">
+          <td>{{ nota.disciplina_nome }}</td>
+          <td>{{ nota.nota }}</td>
+          <td>{{ nota.data_lancamento | date:
+            'shortDate' }}</td>
+          <td>
+            <button (click)="deleteNota(nota.id, nota.aluno_id)" class="delete-button">Excluir</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="notasDoAluno.length === 0 && newNota.aluno_id">Nenhuma nota encontrada para este aluno.</p>
+
+    <hr>
+
+    <h3>Registrar Frequência</h3>
+    <form (ngSubmit)="createFrequencia()">
+      <div class="form-group">
+        <label for="alunoFrequencia">Aluno:</label>
+        <select id="alunoFrequencia" [(ngModel)]="newFrequencia.aluno_id" name="alunoFrequencia" required>
+          <option [ngValue]="null">Selecione um aluno</option>
+          <option *ngFor="let aluno of alunosNaTurma" [ngValue]="aluno.id">{{ aluno.nome }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="disciplinaFrequencia">Disciplina:</label>
+        <select id="disciplinaFrequencia" [(ngModel)]="newFrequencia.disciplina_id" name="disciplinaFrequencia" required>
+          <option [ngValue]="null">Selecione uma disciplina</option>
+          <option *ngFor="let disciplina of disciplinasDaTurma" [ngValue]="disciplina.id">{{ disciplina.nome }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="dataAula">Data da Aula:</label>
+        <input type="date" id="dataAula" [(ngModel)]="newFrequencia.data_aula" name="dataAula" required>
+      </div>
+      <div class="form-group">
+        <label for="presente">Presente:</label>
+        <input type="checkbox" id="presente" [(ngModel)]="newFrequencia.presente" name="presente">
+      </div>
+      <button type="submit">Registrar Frequência</button>
+      <button type="button" (click)="resetFrequenciaForm()">Limpar</button>
+    </form>
+
+    <h4 *ngIf="newFrequencia.aluno_id">Frequência do Aluno Selecionado (ID: {{ newFrequencia.aluno_id }})</h4>
+    <table *ngIf="frequenciaDoAluno.length > 0">
+      <thead>
+        <tr>
+          <th>Disciplina</th>
+          <th>Data da Aula</th>
+          <th>Presente</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let freq of frequenciaDoAluno">
+          <td>{{ freq.disciplina_nome }}</td>
+          <td>{{ freq.data_aula | date:
+            'shortDate' }}</td>
+          <td>{{ freq.presente ? 'Sim' : 'Não' }}</td>
+          <td>
+            <button (click)="deleteFrequencia(freq.id, freq.aluno_id)" class="delete-button">Excluir</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="frequenciaDoAluno.length === 0 && newFrequencia.aluno_id">Nenhum registro de frequência encontrado para este aluno.</p>
+
+  </div>
+</div>
+
+
