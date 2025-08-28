@@ -9,8 +9,9 @@ import { DisciplinaListComponent } from './pages/admin/disciplina-list/disciplin
 import { DashboardComponent as ProfessorDashboardComponent } from './pages/professor/dashboard/dashboard.component';
 import { TurmaDetailComponent } from './pages/professor/turma-detail/turma-detail.component';
 import { DashboardComponent as AlunoDashboardComponent } from './pages/aluno/dashboard/dashboard.component';
-
 import { authGuard } from './guards/auth-guard';
+import { AdminVinculosComponent } from './pages/admin/vinculos/admin-vinculos/admin-vinculos.component';
+
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -21,7 +22,7 @@ export const routes: Routes = [
   { path: 'admin/alunos',     component: AlunoListComponent,    canActivate: [authGuard], data: { roles: ['ADM'] } },
   { path: 'admin/turmas',     component: TurmaListComponent,    canActivate: [authGuard], data: { roles: ['ADM'] } },
   { path: 'admin/disciplinas',component: DisciplinaListComponent,canActivate: [authGuard], data: { roles: ['ADM'] } },
-
+  { path: 'admin/vinculos', component: AdminVinculosComponent, canActivate: [authGuard], data: { roles: ['ADM'] } },
 
   // PROFESSOR
   { path: 'professor/dashboard', component: ProfessorDashboardComponent, canActivate: [authGuard], data: { roles: ['PROFESSOR'] } },

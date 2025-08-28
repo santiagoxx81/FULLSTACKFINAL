@@ -1,0 +1,8 @@
+.page { max-width: 900px; margin: 0 auto; display: grid; gap: 16px; }
+.row { display: grid; gap: 8px; }
+.card { border: 1px solid #ddd; padding: 12px; border-radius: 8px; margin: 8px 0; }
+table { width: 100%; border-collapse: collapse; }
+th, td { border: 1px solid #e5e5e5; padding: 8px; }
+button { cursor: pointer; }
+.erro { color: #b00020; }
+.loading { opacity: 0.7; }

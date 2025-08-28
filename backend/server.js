@@ -18,7 +18,8 @@ console.log("DB_NAME:", process.env.DB_NAME);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+const adminVinculosRoutes = require('./routes/adminVinculosRoutes');
+app.use('/admin', adminVinculosRoutes);
 app.use(cors());
 app.use(express.json());
 

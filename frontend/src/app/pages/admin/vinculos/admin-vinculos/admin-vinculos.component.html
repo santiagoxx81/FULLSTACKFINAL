@@ -1,0 +1,55 @@
+<div class="page">
+  <h2>Vínculos: Alunos ⇄ Turmas</h2>
+
+  <div class="row">
+    <label>Turma:</label>
+    <select [(ngModel)]="turmaSelecionadaId" (change)="onSelecionarTurma()">
+      <option [ngValue]="null">-- selecione --</option>
+      <option *ngFor="let t of turmas" [ngValue]="t.id">{{ t.nome }} ({{ t.periodo }})</option>
+    </select>
+  </div>
+
+  <div class="row" *ngIf="turmaSelecionadaId">
+    <div class="card">
+      <h3>Vincular por aluno</h3>
+      <input type="text" placeholder="Filtrar alunos por nome/matrícula" [ngModel]="filtro()" (ngModelChange)="filtro.set($event)" />
+      <select [(ngModel)]="alunoSelecionadoId">
+        <option [ngValue]="null">-- selecione um aluno --</option>
+        <option *ngFor="let a of alunosFiltrados()" [ngValue]="a.id">{{ a.nome }} — {{ a.matricula }}</option>
+      </select>
+      <button (click)="vincularPorAluno()">Vincular</button>
+    </div>
+
+    <div class="card">
+      <h3>Vincular por matrícula</h3>
+      <input type="text" [(ngModel)]="matriculaInput" placeholder="Ex.: 2023001" />
+      <button (click)="vincularPorMatricula()">Vincular</button>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="turmaSelecionadaId">
+    <h3>Alunos já vinculados</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Aluno</th>
+          <th>Matrícula</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let v of vinculos">
+          <td>{{ v.aluno_nome }}</td>
+          <td>{{ v.matricula }}</td>
+          <td><button (click)="remover(v.aluno_id)">Remover</button></td>
+        </tr>
+        <tr *ngIf="!vinculos?.length">
+          <td colspan="3">Nenhum aluno vinculado a esta turma.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="erro" *ngIf="erro">{{ erro }}</div>
+  <div class="loading" *ngIf="carregando">Carregando...</div>
+</div>
