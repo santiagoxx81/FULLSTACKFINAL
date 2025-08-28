@@ -1,2 +1,15 @@
+.dashboard-container > button {
+  position: fixed;
+  top: 50px;
+  right: 16px;
+  padding: 8px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #b60f0f;
+  cursor: pointer;
+  font-weight: 600;
+}
 
-
+.dashboard-container > button:hover {
+  background: #ee0303;
+}

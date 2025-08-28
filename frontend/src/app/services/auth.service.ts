@@ -57,6 +57,12 @@ export class AuthService {
     }
     return null;
   }
+  logout(): void {
+  // se você salva mais coisas no localStorage, limpe aqui também:
+  localStorage.removeItem('token');
+  localStorage.removeItem('perfil'); // se existir; não quebra se não existir
+  // ou: localStorage.clear();  // se quiser limpar tudo
+}
 }
 
 

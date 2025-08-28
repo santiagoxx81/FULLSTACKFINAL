@@ -11,6 +11,7 @@ import { TurmaDetailComponent } from './pages/professor/turma-detail/turma-detai
 import { DashboardComponent as AlunoDashboardComponent } from './pages/aluno/dashboard/dashboard.component';
 import { authGuard } from './guards/auth-guard';
 import { AdminVinculosComponent } from './pages/admin/vinculos/admin-vinculos/admin-vinculos.component';
+import { LogoutComponent } from './pages/logout/logout.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -31,6 +32,8 @@ export const routes: Routes = [
   // ALUNO
   { path: 'aluno/dashboard', component: AlunoDashboardComponent, canActivate: [authGuard], data: { roles: ['ALUNO'] } },
 
+
+  { path: 'logout', component: LogoutComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
 ];
