@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 // ajuste a URL base conforme seu backend
-const BASE = 'http://localhost:3000/admin';
+const BASE = 'http://localhost:3000/api/admin';
 
 export interface TurmaDTO { id: number; nome: string; periodo: string; professor?: string; }
 export interface AlunoDTO { id: number; nome: string; matricula: string; }

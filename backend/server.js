@@ -1,39 +1,30 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
-const adminRoutes = require('./routes/adminRoutes');
-const alunoRoutes = require('./routes/alunoRoutes');
-const turmaRoutes = require('./routes/turmaRoutes');
-const disciplinaRoutes = require('./routes/disciplinaRoutes');
-const notaRoutes = require('./routes/notaRoutes');
-const frequenciaRoutes = require('./routes/frequenciaRoutes');
 
 dotenv.config();
 
-console.log("DB_USER:", process.env.DB_USER);
-console.log("DB_PASSWORD:", process.env.DB_PASSWORD);
-console.log("DB_NAME:", process.env.DB_NAME);
-
 const app = express();
 const PORT = process.env.PORT || 3000;
-const adminVinculosRoutes = require('./routes/adminVinculosRoutes');
-app.use('/admin', adminVinculosRoutes);
+
+// Middlewares básicos
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/alunos', alunoRoutes);
-app.use('/api/turmas', turmaRoutes);
-app.use('/api/disciplinas', disciplinaRoutes);
-app.use('/api/notas', notaRoutes);
-app.use('/api/frequencia', frequenciaRoutes);
+// Rotas
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/admin', require('./routes/adminVinculosRoutes')); // vinculos sob /api/admin
+app.use('/api/alunos', require('./routes/alunoRoutes'));
+app.use('/api/turmas', require('./routes/turmaRoutes'));
+app.use('/api/disciplinas', require('./routes/disciplinaRoutes'));
+app.use('/api/notas', require('./routes/notaRoutes'));
+app.use('/api/frequencia', require('./routes/frequenciaRoutes'));
+
+// Healthcheck
+app.get('/health', (_req, res) => res.json({ ok: true }));
 
 app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
-
-

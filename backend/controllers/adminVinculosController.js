@@ -1,6 +1,6 @@
 const svc = require('../services/vinculosService');
 
-exports.listarTurmas = async (req, res) => {
+exports.listarTurmas = async (_req, res) => {
   try {
     const turmas = await svc.listarTurmas();
     res.json(turmas);
@@ -9,7 +9,7 @@ exports.listarTurmas = async (req, res) => {
   }
 };
 
-exports.listarAlunos = async (req, res) => {
+exports.listarAlunos = async (_req, res) => {
   try {
     const alunos = await svc.listarAlunos();
     res.json(alunos);
