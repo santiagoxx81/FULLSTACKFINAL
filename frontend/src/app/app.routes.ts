@@ -10,17 +10,26 @@ import { DashboardComponent as ProfessorDashboardComponent } from './pages/profe
 import { TurmaDetailComponent } from './pages/professor/turma-detail/turma-detail.component';
 import { DashboardComponent as AlunoDashboardComponent } from './pages/aluno/dashboard/dashboard.component';
 
+import { authGuard } from './guards/auth-guard';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'admin/dashboard', component: AdminDashboardComponent },
-  { path: 'admin/users', component: UserListComponent },
-  { path: 'admin/alunos', component: AlunoListComponent },
-  { path: 'admin/turmas', component: TurmaListComponent },
-  { path: 'admin/disciplinas', component: DisciplinaListComponent },
-  { path: 'professor/dashboard', component: ProfessorDashboardComponent },
-  { path: 'professor/turma/:id', component: TurmaDetailComponent },
-  { path: 'aluno/dashboard', component: AlunoDashboardComponent },
+
+  // ADMIN somente logado e com perfil ADMIN
+  { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [authGuard], data: { roles: ['ADM'] } },
+  { path: 'admin/users',      component: UserListComponent,     canActivate: [authGuard], data: { roles: ['ADM'] } },
+  { path: 'admin/alunos',     component: AlunoListComponent,    canActivate: [authGuard], data: { roles: ['ADM'] } },
+  { path: 'admin/turmas',     component: TurmaListComponent,    canActivate: [authGuard], data: { roles: ['ADM'] } },
+  { path: 'admin/disciplinas',component: DisciplinaListComponent,canActivate: [authGuard], data: { roles: ['ADM'] } },
+
+
+  // PROFESSOR
+  { path: 'professor/dashboard', component: ProfessorDashboardComponent, canActivate: [authGuard], data: { roles: ['PROFESSOR'] } },
+  { path: 'professor/turma/:id', component: TurmaDetailComponent,         canActivate: [authGuard], data: { roles: ['PROFESSOR'] } },
+
+  // ALUNO
+  { path: 'aluno/dashboard', component: AlunoDashboardComponent, canActivate: [authGuard], data: { roles: ['ALUNO'] } },
+
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' } // Redireciona para login em caso de rota não encontrada
+  { path: '**', redirectTo: 'login' }
 ];
